@@ -1,0 +1,16 @@
+node_modules/
+.env
+.env.*
+!.env.example
+test-results/
+playwright-report/
+playwright/.auth/
+blob-report/
+coverage/
+*.log
+*.trace
+*.har
+*.pem
+*.key
+*.tsbuildinfo
+.DS_Store
