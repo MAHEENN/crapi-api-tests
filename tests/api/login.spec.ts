@@ -28,3 +28,39 @@ test('login rejects an incorrect password without issuing a token', async ({
     'Expected an invalid-credentials response with no token',
   ).toBe('rejected');
 });
+
+test('login does not reveal whether an email is registered', async ({
+  request,
+}) => {
+  // Request A: Unregistered email
+  const unknownUserResponse = await request.post(
+    '/identity/api/auth/login',
+    {
+      data: {
+        email: 'nonexistent@example.invalid',
+        password: 'deliberately-wrong',
+      },
+    },
+  );
+
+  const unknownUserBody = await unknownUserResponse.json();
+
+  // Request B: Registered email, incorrect password
+  const registeredAccount = withIncorrectPassword(fixtureAccount('TEST'));
+
+  const registeredUserResponse = await request.post(
+    '/identity/api/auth/login',
+    {
+      data: registeredAccount,
+    },
+  );
+
+  const registeredUserBody = await registeredUserResponse.json();
+
+  // Both login attempts must be rejected
+  expect(unknownUserResponse.status()).toBe(401);
+  expect(registeredUserResponse.status()).toBe(401);
+
+  // Security assertion: Do not disclose whether the account exists
+  expect(unknownUserBody.message).toBe(registeredUserBody.message);
+});
