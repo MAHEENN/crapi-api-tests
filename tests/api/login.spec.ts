@@ -33,15 +33,12 @@ test('login does not reveal whether an email is registered', async ({
   request,
 }) => {
   // Request A: Unregistered email
-  const unknownUserResponse = await request.post(
-    '/identity/api/auth/login',
-    {
-      data: {
-        email: 'nonexistent@example.invalid',
-        password: 'deliberately-wrong',
-      },
+  const unknownUserResponse = await request.post('/identity/api/auth/login', {
+    data: {
+      email: 'nonexistent@example.invalid',
+      password: 'deliberately-wrong',
     },
-  );
+  });
 
   const unknownUserBody = await unknownUserResponse.json();
 
