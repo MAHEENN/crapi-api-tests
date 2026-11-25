@@ -28,24 +28,21 @@ test('customer can retrieve their associated vehicle', async ({ request }) => {
     year: 2026, // Replace with the actual year you expect
   };
 
-  const expectedVehicle = vehicles.find(
+  const vehicle = vehicles.find(
     (vehicle) => vehicle.vin === exppectedVehicle.vin,
   );
 
-  if (!expectedVehicle) {
+  if (!vehicle) {
     throw new Error(`Expected vehicle '${exppectedVehicle.vin}' not found`);
   }
 
   // Validate vehicle attributes
-  expect(
-    expectedVehicle.model.vehiclecompany.name,
-    'Expected manufacturer',
-  ).toBe(exppectedVehicle.manufacturer);
-  expect(expectedVehicle.model.model, 'Expected model').toBe(
-    exppectedVehicle.model,
+  expect(vehicle.model.vehiclecompany.name, 'Expected manufacturer').toBe(
+    exppectedVehicle.manufacturer,
   );
-  expect(expectedVehicle.model.fuel_type, 'Expected fuel type').toBe(
+  expect(vehicle.model.model, 'Expected model').toBe(exppectedVehicle.model);
+  expect(vehicle.model.fuel_type, 'Expected fuel type').toBe(
     exppectedVehicle.fuelType,
   );
-  expect(expectedVehicle.year, 'Expected year').toBe(exppectedVehicle.year);
+  expect(vehicle.year, 'Expected year').toBe(exppectedVehicle.year);
 });
